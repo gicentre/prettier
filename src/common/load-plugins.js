@@ -16,11 +16,13 @@ function loadPlugins(plugins) {
     require("../language-vue")
   ];
 
+  const basedir = path.resolve(__dirname, '../..');
   const externalPlugins = plugins
     .concat(
       getPluginsFromPackage(
         readPkgUp.sync({
-          normalize: false
+          normalize: false,
+          cwd: basedir
         }).pkg
       )
     )
@@ -29,7 +31,7 @@ function loadPlugins(plugins) {
         return plugin;
       }
 
-      const pluginPath = resolve.sync(plugin, { basedir: process.cwd() });
+      const pluginPath = resolve.sync(plugin, { basedir });
       return Object.assign({ name: plugin }, eval("require")(pluginPath));
     });
 
