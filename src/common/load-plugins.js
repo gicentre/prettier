@@ -27,7 +27,9 @@ function loadPlugins(plugins) {
     require("../language-vue")
   ];
 
-  const nodeModulesDir = finDirUp(process.cwd(), "node_modules");
+  const nodeModulesDir =
+    finDirUp(__dirname, "node_modules") ||
+    finDirUp(process.cwd(), "node_modules");
   const autoPluginNames = findPluginsInNodeModules(nodeModulesDir).filter(
     name =>
       userPluginNames.indexOf(name) === -1 &&
