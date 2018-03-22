@@ -28,8 +28,9 @@ function loadPlugins(plugins) {
   ];
 
   const nodeModulesDir =
-    finDirUp(__dirname, "node_modules") ||
-    finDirUp(process.cwd(), "node_modules");
+    findDirUp(__dirname, "node_modules") ||
+    findDirUp(process.cwd(), "node_modules");
+
   const autoPluginNames = findPluginsInNodeModules(nodeModulesDir).filter(
     name =>
       userPluginNames.indexOf(name) === -1 &&
@@ -64,7 +65,7 @@ function deduplicate(items) {
   return uniqItems;
 }
 
-function finDirUp(startDir, dirToFind) {
+function findDirUp(startDir, dirToFind) {
   let currentDir = startDir;
   do {
     const result = path.resolve(currentDir, dirToFind);
