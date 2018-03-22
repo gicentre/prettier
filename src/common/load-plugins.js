@@ -1,7 +1,8 @@
 "use strict";
 
-const findup = require("findup-sync");
+const fs = require("fs");
 const globby = require("globby");
+const path = require("path");
 const resolve = require("resolve");
 
 function loadPlugins(plugins) {
@@ -26,7 +27,7 @@ function loadPlugins(plugins) {
     require("../language-vue")
   ];
 
-  const nodeModulesDir = findup("node_modules", { pwd: __dirname });
+  const nodeModulesDir = finDirUp(process.cwd(), "node_modules");
   const autoPluginNames = findPluginsInNodeModules(nodeModulesDir).filter(
     name =>
       userPluginNames.indexOf(name) === -1 &&
@@ -61,7 +62,22 @@ function deduplicate(items) {
   return uniqItems;
 }
 
+function finDirUp(startDir, dirToFind) {
+  let currentDir = startDir;
+  do {
+    const result = path.resolve(currentDir, dirToFind);
+    if (fs.existsSync(result)) {
+      return result;
+    }
+    currentDir = path.dirname(currentDir);
+  } while (currentDir > dirToFind.length);
+  return null;
+}
+
 function findPluginsInNodeModules(nodeModulesDir) {
+  if (!nodeModulesDir) {
+    return [];
+  }
   const pluginPackageJsonPaths = globby.sync(
     ["prettier-plugin-*/package.json", "@prettier/plugin-*/package.json"],
     { cwd: nodeModulesDir }
