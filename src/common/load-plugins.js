@@ -72,7 +72,7 @@ function finDirUp(startDir, dirToFind) {
       return result;
     }
     currentDir = path.dirname(currentDir);
-  } while (currentDir > dirToFind.length);
+  } while (currentDir.length > dirToFind.length);
   return null;
 }
 
