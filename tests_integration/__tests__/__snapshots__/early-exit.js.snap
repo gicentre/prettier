@@ -301,6 +301,18 @@ Default: []
 
 exports[`show detailed usage with --help plugin (write) 1`] = `Array []`;
 
+exports[`show detailed usage with --help plugin-search-dir (stderr) 1`] = `""`;
+
+exports[`show detailed usage with --help plugin-search-dir (stdout) 1`] = `
+"--plugin-search-dir <path>
+
+  Custom directory that contains prettier plugins in node_modules subdirectory.
+  Overrides default behavior when plugins are searched relatively to the location of Prettier.
+"
+`;
+
+exports[`show detailed usage with --help plugin-search-dir (write) 1`] = `Array []`;
+
 exports[`show detailed usage with --help print-width (stderr) 1`] = `""`;
 
 exports[`show detailed usage with --help print-width (stdout) 1`] = `
@@ -598,6 +610,9 @@ Config options:
                            Defaults to .prettierignore.
   --plugin <path>          Add a plugin. Multiple plugins can be passed as separate \`--plugin\`s.
                            Defaults to [].
+  --plugin-search-dir <path>
+                           Custom directory that contains prettier plugins in node_modules subdirectory.
+                           Overrides default behavior when plugins are searched relatively to the location of Prettier.
   --with-node-modules      Process files inside 'node_modules' directory.
 
 Editor options:
@@ -740,6 +755,9 @@ Config options:
                            Defaults to .prettierignore.
   --plugin <path>          Add a plugin. Multiple plugins can be passed as separate \`--plugin\`s.
                            Defaults to [].
+  --plugin-search-dir <path>
+                           Custom directory that contains prettier plugins in node_modules subdirectory.
+                           Overrides default behavior when plugins are searched relatively to the location of Prettier.
   --with-node-modules      Process files inside 'node_modules' directory.
 
 Editor options:

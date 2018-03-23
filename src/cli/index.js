@@ -38,9 +38,18 @@ function run(args) {
 
     if (context.argv["support-info"]) {
       context.logger.log(
-        prettier.format(stringify(prettier.getSupportInfo()), {
-          parser: "json"
-        })
+        prettier.format(
+          stringify(
+            prettier.getSupportInfo(
+              null,
+              null,
+              context.argv["plugin-search-dir"]
+            )
+          ),
+          {
+            parser: "json"
+          }
+        )
       );
       process.exit(0);
     }

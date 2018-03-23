@@ -813,7 +813,7 @@ function createContext(args) {
   const context = { args };
 
   updateContextArgv(context);
-  normalizeContextArgv(context, ["loglevel", "plugin"]);
+  normalizeContextArgv(context, ["loglevel", "plugin", "plugin-search-dir"]);
 
   context.logger = createLogger(context.argv["loglevel"]);
 

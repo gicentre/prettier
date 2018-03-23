@@ -5,7 +5,7 @@ const globby = require("globby");
 const path = require("path");
 const resolve = require("resolve");
 
-function loadPlugins(plugins) {
+function loadPlugins(plugins, pluginSearchDir = null) {
   const alreadyLoadedPlugins = (plugins || []).filter(
     plugin => plugin instanceof Object
   );
@@ -27,9 +27,9 @@ function loadPlugins(plugins) {
     require("../language-vue")
   ];
 
-  const nodeModulesDir =
-    findDirUp(__dirname, "node_modules") ||
-    findDirUp(process.cwd(), "node_modules");
+  const nodeModulesDir = pluginSearchDir
+    ? path.resolve(process.cwd(), pluginSearchDir, "node_modules")
+    : findDirUp(__dirname, "node_modules");
 
   const autoPluginNames = findPluginsInNodeModules(nodeModulesDir).filter(
     name =>
@@ -81,10 +81,15 @@ function findPluginsInNodeModules(nodeModulesDir) {
   if (!nodeModulesDir) {
     return [];
   }
-  const pluginPackageJsonPaths = globby.sync(
-    ["prettier-plugin-*/package.json", "@prettier/plugin-*/package.json"],
-    { cwd: nodeModulesDir }
-  );
+  let pluginPackageJsonPaths = [];
+  try {
+    pluginPackageJsonPaths = globby.sync(
+      ["prettier-plugin-*/package.json", "@prettier/plugin-*/package.json"],
+      { cwd: nodeModulesDir }
+    );
+  } catch (e) {
+    // no need to do anything if no plugins were found
+  }
   return pluginPackageJsonPaths.map(packageJsonPath =>
     packageJsonPath.replace(/(\/|\\)package.json$/i, "")
   );
