@@ -29,7 +29,10 @@ function loadPlugins(plugins, pluginSearchDir) {
 
   const nodeModulesDir = pluginSearchDir
     ? path.resolve(process.cwd(), pluginSearchDir, "node_modules")
-    : findDirUp(__dirname, "node_modules");
+    : findDirUp(
+        path.resolve(findDirUp(__dirname, "prettier"), ".."),
+        "node_modules"
+      );
 
   const autoPluginNames = findPluginsInNodeModules(nodeModulesDir).filter(
     name =>
