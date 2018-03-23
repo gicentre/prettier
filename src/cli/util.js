@@ -827,14 +827,14 @@ function initContext(context) {
   normalizeContextArgv(context);
 }
 
-function updateContextOptions(context, plugins = []) {
+function updateContextOptions(context, plugins) {
   const supportOptions = getSupportInfo(
     null,
     {
       showDeprecated: true,
       showUnreleased: true,
       showInternal: true,
-      plugins,
+      plugins: plugins || [],
       pluginsLoaded: typeof context.argv === "undefined"
     },
     context.argv && context.argv["plugin-search-dir"]

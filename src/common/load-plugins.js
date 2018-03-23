@@ -5,7 +5,7 @@ const globby = require("globby");
 const path = require("path");
 const resolve = require("resolve");
 
-function loadPlugins(plugins, pluginSearchDir = null) {
+function loadPlugins(plugins, pluginSearchDir) {
   const alreadyLoadedPlugins = (plugins || []).filter(
     plugin => plugin instanceof Object
   );
