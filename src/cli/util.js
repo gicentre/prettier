@@ -827,13 +827,18 @@ function initContext(context) {
   normalizeContextArgv(context);
 }
 
-function updateContextOptions(context, plugins) {
-  const supportOptions = getSupportInfo(null, {
-    showDeprecated: true,
-    showUnreleased: true,
-    showInternal: true,
-    plugins
-  }).options;
+function updateContextOptions(context, plugins = []) {
+  const supportOptions = getSupportInfo(
+    null,
+    {
+      showDeprecated: true,
+      showUnreleased: true,
+      showInternal: true,
+      plugins,
+      pluginsLoaded: typeof context.argv === "undefined"
+    },
+    context.argv && context.argv["plugin-search-dir"]
+  ).options;
 
   const detailedOptionMap = normalizeDetailedOptionMap(
     Object.assign({}, createDetailedOptionMap(supportOptions), constant.options)
