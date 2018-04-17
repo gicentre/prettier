@@ -813,7 +813,7 @@ function createContext(args) {
   const context = { args };
 
   updateContextArgv(context);
-  normalizeContextArgv(context, ["loglevel", "plugin"]);
+  normalizeContextArgv(context, ["loglevel", "plugin", "plugin-search-dir"]);
 
   context.logger = createLogger(context.argv["loglevel"]);
 
@@ -828,12 +828,17 @@ function initContext(context) {
 }
 
 function updateContextOptions(context, plugins) {
-  const supportOptions = getSupportInfo(null, {
-    showDeprecated: true,
-    showUnreleased: true,
-    showInternal: true,
-    plugins
-  }).options;
+  const supportOptions = getSupportInfo(
+    null,
+    {
+      showDeprecated: true,
+      showUnreleased: true,
+      showInternal: true,
+      plugins: plugins || [],
+      pluginsLoaded: typeof context.argv === "undefined"
+    },
+    context.argv && context.argv["plugin-search-dir"]
+  ).options;
 
   const detailedOptionMap = normalizeDetailedOptionMap(
     Object.assign({}, createDetailedOptionMap(supportOptions), constant.options)

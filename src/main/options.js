@@ -20,7 +20,7 @@ function normalize(options, opts) {
 
   const rawOptions = Object.assign({}, options);
 
-  const plugins = loadPlugins(rawOptions.plugins);
+  const plugins = loadPlugins(rawOptions.plugins, rawOptions.pluginSearchDir);
   rawOptions.plugins = plugins;
 
   const supportOptions = getSupportInfo(null, {

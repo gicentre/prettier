@@ -121,6 +121,17 @@ const supportOptions = {
     cliName: "plugin",
     cliCategory: cliConstant.CATEGORY_CONFIG
   },
+  pluginSearchDir: {
+    since: "1.13.0",
+    type: "path",
+    category: CATEGORY_GLOBAL,
+    description: dedent`
+      Custom directory that contains prettier plugins in node_modules subdirectory.
+      Overrides default behavior when plugins are searched relatively to the location of Prettier.
+    `,
+    exception: value => typeof value === "string" || typeof value === "object",
+    cliCategory: cliConstant.CATEGORY_CONFIG
+  },
   printWidth: {
     since: "0.0.0",
     category: CATEGORY_GLOBAL,
@@ -192,7 +203,7 @@ const supportOptions = {
   }
 };
 
-function getSupportInfo(version, opts) {
+function getSupportInfo(version, opts, pluginSearchDir) {
   opts = Object.assign(
     {
       plugins: [],
@@ -208,7 +219,9 @@ function getSupportInfo(version, opts) {
     version = currentVersion;
   }
 
-  const plugins = opts.pluginsLoaded ? opts.plugins : loadPlugins(opts.plugins);
+  const plugins = opts.pluginsLoaded
+    ? opts.plugins
+    : loadPlugins(opts.plugins, pluginSearchDir);
 
   const options = util
     .arrayify(

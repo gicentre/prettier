@@ -1,10 +1,21 @@
 "use strict";
 
+const fs = require("fs");
+const globby = require("globby");
+const path = require("path");
 const resolve = require("resolve");
-const readPkgUp = require("read-pkg-up");
 
-function loadPlugins(plugins) {
-  plugins = plugins || [];
+function loadPlugins(plugins, pluginSearchDir) {
+  const alreadyLoadedPlugins = (plugins || []).filter(
+    plugin => plugin instanceof Object
+  );
+  const alreadyLoadedPluginNames = deduplicate(
+    alreadyLoadedPlugins.map(plugin => plugin.name)
+  );
+
+  const userPluginNames = (plugins || []).filter(
+    plugin => typeof plugin === "string"
+  );
 
   const internalPlugins = [
     require("../language-js"),
@@ -16,34 +27,34 @@ function loadPlugins(plugins) {
     require("../language-vue")
   ];
 
-  const externalPlugins = plugins
-    .concat(
-      getPluginsFromPackage(
-        readPkgUp.sync({
-          normalize: false
-        }).pkg
-      )
-    )
-    .map(plugin => {
-      if (typeof plugin !== "string") {
-        return plugin;
-      }
+  const nodeModulesDir = pluginSearchDir
+    ? path.resolve(process.cwd(), pluginSearchDir, "node_modules")
+    : findDirUp(
+        path.resolve(findDirUp(__dirname, "prettier"), ".."),
+        "node_modules"
+      );
 
-      const pluginPath = resolve.sync(plugin, { basedir: process.cwd() });
-      return Object.assign({ name: plugin }, eval("require")(pluginPath));
-    });
+  const autoPluginNames = findPluginsInNodeModules(nodeModulesDir).filter(
+    name =>
+      userPluginNames.indexOf(name) === -1 &&
+      alreadyLoadedPluginNames.indexOf(name) === -1
+  );
 
-  return deduplicate(internalPlugins.concat(externalPlugins));
-}
+  const userPluginPaths = userPluginNames.map(name =>
+    resolve.sync(name, { basedir: process.cwd() })
+  );
+  const autoPluginPaths = autoPluginNames.map(name =>
+    resolve.sync(name, { basedir: nodeModulesDir })
+  );
 
-function getPluginsFromPackage(pkg) {
-  if (!pkg) {
-    return [];
-  }
-  const deps = Object.assign({}, pkg.dependencies, pkg.devDependencies);
-  return Object.keys(deps).filter(
-    dep =>
-      dep.startsWith("prettier-plugin-") || dep.startsWith("@prettier/plugin-")
+  const externalPluginNames = userPluginNames.concat(autoPluginNames);
+  const externalPluginPaths = userPluginPaths.concat(autoPluginPaths);
+
+  const externalPlugins = externalPluginPaths.map((pluginPath, i) =>
+    Object.assign({ name: externalPluginNames[i] }, eval("require")(pluginPath))
+  );
+  return deduplicate(
+    alreadyLoadedPlugins.concat(internalPlugins, externalPlugins)
   );
 }
 
@@ -55,6 +66,36 @@ function deduplicate(items) {
     }
   }
   return uniqItems;
+}
+
+function findDirUp(startDir, dirToFind) {
+  let currentDir = startDir;
+  do {
+    const result = path.resolve(currentDir, dirToFind);
+    if (fs.existsSync(result)) {
+      return result;
+    }
+    currentDir = path.dirname(currentDir);
+  } while (currentDir.length > dirToFind.length);
+  return null;
+}
+
+function findPluginsInNodeModules(nodeModulesDir) {
+  if (!nodeModulesDir) {
+    return [];
+  }
+  let pluginPackageJsonPaths = [];
+  try {
+    pluginPackageJsonPaths = globby.sync(
+      ["prettier-plugin-*/package.json", "@prettier/plugin-*/package.json"],
+      { cwd: nodeModulesDir }
+    );
+  } catch (e) {
+    // no need to do anything if no plugins were found
+  }
+  return pluginPackageJsonPaths.map(packageJsonPath =>
+    packageJsonPath.replace(/(\/|\\)package.json$/i, "")
+  );
 }
 
 module.exports = loadPlugins;

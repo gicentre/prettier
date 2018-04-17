@@ -3,8 +3,12 @@
 const runPrettier = require("../runPrettier");
 const EOL = require("os").EOL;
 
-describe("automatically loads 'prettier-plugin-*' from package.json devDependencies", () => {
-  runPrettier("plugins/automatic", ["file.txt", "--parser=foo"]).test({
+describe("automatically loads 'prettier-plugin-*' from --plugin-search-dir", () => {
+  runPrettier("plugins/automatic", [
+    "file.txt",
+    "--parser=foo",
+    `--plugin-search-dir=.`
+  ]).test({
     stdout: "foo+contents" + EOL,
     stderr: "",
     status: 0,
@@ -12,8 +16,12 @@ describe("automatically loads 'prettier-plugin-*' from package.json devDependenc
   });
 });
 
-describe("automatically loads '@prettier/plugin-*' from package.json dependencies", () => {
-  runPrettier("plugins/automatic", ["file.txt", "--parser=bar"]).test({
+describe("automatically loads '@prettier/plugin-*' from --plugin-search-dir", () => {
+  runPrettier("plugins/automatic", [
+    "file.txt",
+    "--parser=bar",
+    `--plugin-search-dir=.`
+  ]).test({
     stdout: "bar+contents" + EOL,
     stderr: "",
     status: 0,
