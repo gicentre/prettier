@@ -4,6 +4,7 @@ const version = require("./package.json").version;
 
 const privateUtil = require("./src/common/util");
 const sharedUtil = require("./src/common/util-shared");
+const getFileInfo = require("./src/common/get-file-info");
 const getSupportInfo = require("./src/common/support").getSupportInfo;
 
 const comments = require("./src/main/comments");
@@ -409,6 +410,7 @@ module.exports = {
   clearConfigCache: config.clearCache,
 
   getSupportInfo,
+  getFileInfo,
 
   version,
 

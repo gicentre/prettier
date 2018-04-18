@@ -136,6 +136,17 @@ const options = {
     description:
       "Find and print the path to a configuration file for the given input file."
   },
+  "file-info": {
+    type: "path",
+    category: CATEGORY_CONFIG,
+    description: dedent`
+      Extract the following info (as JSON) for a given file path:
+        parser: string - name of a parser to be use if the file is formatted
+        parserIsFallback: boolean - true if parser could not be derived from file path
+        ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore by default)
+        formattable: boolean - true when parser is not fallback and not file is not ignored
+    `
+  },
   help: {
     type: "flag",
     alias: "h",
