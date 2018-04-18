@@ -108,10 +108,10 @@ exports[`show detailed usage with --help file-info (stdout) 1`] = `
 "--file-info <path>
 
   Extract the following info (as JSON) for a given file path:
-    parser: string - name of a parser to be use if the file is formatted
-    parserIsFallback: boolean - true if parser could not be derived from file path
-    ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore by default)
-    formattable: boolean - true when parser is not fallback and not file is not ignored
+    parser: string - name of parser to use if the file is formatted
+    parserIsFallback: boolean - true if parser cannot not be derived from file path
+    ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore)
+    formattable: boolean - true when parser is not fallback and file is not ignored
 "
 `;
 
@@ -608,10 +608,10 @@ Config options:
                            Defaults to cli-override.
   --no-editorconfig        Don't take .editorconfig into account when parsing configuration.
   --file-info <path>       Extract the following info (as JSON) for a given file path:
-                             parser: string - name of a parser to be use if the file is formatted
-                             parserIsFallback: boolean - true if parser could not be derived from file path
-                             ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore by default)
-                             formattable: boolean - true when parser is not fallback and not file is not ignored
+                             parser: string - name of parser to use if the file is formatted
+                             parserIsFallback: boolean - true if parser cannot not be derived from file path
+                             ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore)
+                             formattable: boolean - true when parser is not fallback and file is not ignored
   --find-config-path <path>
                            Find and print the path to a configuration file for the given input file.
   --ignore-path <path>     Path to a file with patterns describing files to ignore.
@@ -755,10 +755,10 @@ Config options:
                            Defaults to cli-override.
   --no-editorconfig        Don't take .editorconfig into account when parsing configuration.
   --file-info <path>       Extract the following info (as JSON) for a given file path:
-                             parser: string - name of a parser to be use if the file is formatted
-                             parserIsFallback: boolean - true if parser could not be derived from file path
-                             ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore by default)
-                             formattable: boolean - true when parser is not fallback and not file is not ignored
+                             parser: string - name of parser to use if the file is formatted
+                             parserIsFallback: boolean - true if parser cannot not be derived from file path
+                             ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore)
+                             formattable: boolean - true when parser is not fallback and file is not ignored
   --find-config-path <path>
                            Find and print the path to a configuration file for the given input file.
   --ignore-path <path>     Path to a file with patterns describing files to ignore.

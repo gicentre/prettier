@@ -141,10 +141,10 @@ const options = {
     category: CATEGORY_CONFIG,
     description: dedent`
       Extract the following info (as JSON) for a given file path:
-        parser: string - name of a parser to be use if the file is formatted
-        parserIsFallback: boolean - true if parser could not be derived from file path
-        ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore by default)
-        formattable: boolean - true when parser is not fallback and not file is not ignored
+        parser: string - name of parser to use if the file is formatted
+        parserIsFallback: boolean - true if parser cannot not be derived from file path
+        ignored: boolean - true if the file is filtered by --ignore-path (.prettierignore)
+        formattable: boolean - true when parser is not fallback and file is not ignored
     `
   },
   help: {
