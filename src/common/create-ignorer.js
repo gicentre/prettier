@@ -4,16 +4,16 @@ const ignore = require("ignore");
 const fs = require("fs");
 const path = require("path");
 
-function createIgnorer(ignoreFilePath, withNodeModules) {
-  const resolvedIgnoreFilePath = path.resolve(ignoreFilePath);
+function createIgnorer(ignorePath, withNodeModules) {
+  const resolvedIgnorePath = path.resolve(ignorePath);
   let ignoreText = "";
 
   try {
-    ignoreText = fs.readFileSync(resolvedIgnoreFilePath, "utf8");
+    ignoreText = fs.readFileSync(resolvedIgnorePath, "utf8");
   } catch (readError) {
     if (readError.code !== "ENOENT") {
       throw new Error(
-        `Unable to read ${resolvedIgnoreFilePath}: ${readError.message}`
+        `Unable to read ${resolvedIgnorePath}: ${readError.message}`
       );
     }
   }

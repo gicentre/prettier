@@ -4,7 +4,7 @@ const createIgnorer = require("../common/create-ignorer");
 const fs = require("fs");
 const options = require("../main/options");
 
-/** @param {{filepath: string, ignorePath: string, withNodeModules: boolean ...otherOptions }} opts */
+/** @param {{filepath: string, ignorePath: string | false = '.prettierignore', withNodeModules: boolean = false, ...otherPrettierOptions }} opts */
 function getFileInfo(opts) {
   let stats;
   try {
@@ -14,9 +14,14 @@ function getFileInfo(opts) {
   }
   const exists = (stats && stats.isFile()) || false;
 
+  const ignorePath =
+    typeof opts.ignorePath !== "undefined"
+      ? opts.ignorePath
+      : ".prettierignore";
+
   let ignored = false;
-  if (opts.ignorePath) {
-    const ignorer = createIgnorer(opts.ignorePath, opts.withNodeModules);
+  if (ignorePath) {
+    const ignorer = createIgnorer(ignorePath, opts.withNodeModules);
     ignored = ignorer.ignores(opts.filepath);
   }
 
