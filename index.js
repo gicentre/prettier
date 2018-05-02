@@ -4,6 +4,7 @@ const version = require("./package.json").version;
 
 const core = require("./src/main/core");
 const getSupportInfo = require("./src/main/support").getSupportInfo;
+const getFileInfo = require("./src/common/get-file-info");
 const sharedUtil = require("./src/common/util-shared");
 const loadPlugins = require("./src/common/load-plugins");
 
@@ -47,6 +48,7 @@ module.exports = {
   resolveConfigFile: config.resolveConfigFile,
   clearConfigCache: config.clearCache,
 
+  getFileInfo: withPlugins(getFileInfo),
   getSupportInfo: withPlugins(getSupportInfo),
 
   version,

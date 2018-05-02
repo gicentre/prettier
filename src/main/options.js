@@ -126,4 +126,4 @@ function inferParser(filepath, plugins) {
   return language && language.parsers[0];
 }
 
-module.exports = { normalize, hiddenDefaults };
+module.exports = { normalize, hiddenDefaults, inferParser };
