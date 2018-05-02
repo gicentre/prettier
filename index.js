@@ -12,12 +12,15 @@ const config = require("./src/config/resolve-config");
 
 const doc = require("./src/doc");
 
-// Luckily `opts` is always the 2nd argument
-function withPlugins(fn) {
+function withPlugins(fn, optionIndexInArgs) {
+  // it is assumed that `opts` are the 2nd argument not defined
+  if (typeof optionIndexInArgs !== "number") {
+    optionIndexInArgs = 1;
+  }
   return function() {
     const args = Array.from(arguments);
-    const opts = args[1] || {};
-    args[1] = Object.assign({}, opts, {
+    const opts = args[optionIndexInArgs] || {};
+    args[optionIndexInArgs] = Object.assign({}, opts, {
       plugins: loadPlugins(opts.plugins)
     });
     return fn.apply(null, args);
@@ -48,7 +51,7 @@ module.exports = {
   resolveConfigFile: config.resolveConfigFile,
   clearConfigCache: config.clearCache,
 
-  getFileInfo: withPlugins(getFileInfo),
+  getFileInfo: withPlugins(getFileInfo, 0),
   getSupportInfo: withPlugins(getSupportInfo),
 
   version,

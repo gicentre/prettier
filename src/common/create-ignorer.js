@@ -4,7 +4,7 @@ const ignore = require("ignore");
 const fs = require("fs");
 const path = require("path");
 
-function createIgnorer(ignoreFilePath, doNotIgnoreNodeModules) {
+function createIgnorer(ignoreFilePath, withNodeModules) {
   const resolvedIgnoreFilePath = path.resolve(ignoreFilePath);
   let ignoreText = "";
 
@@ -19,7 +19,7 @@ function createIgnorer(ignoreFilePath, doNotIgnoreNodeModules) {
   }
 
   const ignorer = ignore().add(ignoreText);
-  if (!doNotIgnoreNodeModules) {
+  if (!withNodeModules) {
     ignorer.add("node_modules");
   }
   return ignorer;

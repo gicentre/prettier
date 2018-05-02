@@ -55,12 +55,9 @@ function run(args) {
       context.argv["stdin"] || (!hasFilePatterns && !process.stdin.isTTY);
 
     if (context.argv["find-config-path"]) {
-      util.logResolvedConfigPathOrDie(
-        context,
-        context.argv["find-config-path"]
-      );
+      util.logResolvedConfigPathOrDie(context);
     } else if (context.argv["file-info"]) {
-      util.logFileInfoOrDie(context, context.argv["file-info"]);
+      util.logFileInfoOrDie(context);
     } else if (useStdin) {
       util.formatStdin(context);
     } else if (hasFilePatterns) {

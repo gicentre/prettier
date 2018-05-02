@@ -77,8 +77,10 @@ function handleError(context, filename, error) {
   process.exitCode = 2;
 }
 
-function logResolvedConfigPathOrDie(context, filePath) {
-  const configFile = prettier.resolveConfigFile.sync(filePath);
+function logResolvedConfigPathOrDie(context) {
+  const configFile = prettier.resolveConfigFile.sync(
+    context.argv["find-config-path"]
+  );
   if (configFile) {
     context.logger.log(path.relative(process.cwd(), configFile));
   } else {
@@ -86,21 +88,16 @@ function logResolvedConfigPathOrDie(context, filePath) {
   }
 }
 
-function logFileInfoOrDie(context, filePath) {
+function logFileInfoOrDie(context) {
+  const options = Object.assign({}, context.options, {
+    filepath: context.argv["file-info"],
+    ignorePath: context.argv["ignore-path"],
+    withNodeModules: context.argv["with-node-modules"]
+  });
   context.logger.log(
-    prettier.format(
-      stringify(
-        prettier.getFileInfo(
-          filePath,
-          context.options,
-          context.argv["ignore-path"],
-          context.argv["with-node-modules"]
-        )
-      ),
-      {
-        parser: "json"
-      }
-    )
+    prettier.format(stringify(prettier.getFileInfo(options)), {
+      parser: "json"
+    })
   );
 }
 

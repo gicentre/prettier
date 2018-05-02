@@ -4,23 +4,24 @@ const createIgnorer = require("../common/create-ignorer");
 const fs = require("fs");
 const options = require("../main/options");
 
-function getFileInfo(filePath, opts, ignorePath, doNotIgnoreNodeModules) {
+/** @param {{filepath: string, ignorePath: string, withNodeModules: boolean ...otherOptions }} opts */
+function getFileInfo(opts) {
   let stats;
   try {
-    stats = fs.statSync(filePath);
+    stats = fs.statSync(opts.filepath);
   } catch (e) {
     // file / dir at filePath does not exist - no need to handle
   }
   const exists = (stats && stats.isFile()) || false;
 
-  const ignorer = createIgnorer(ignorePath, doNotIgnoreNodeModules);
-  const ignored = ignorer.ignores(filePath);
+  let ignored = false;
+  if (opts.ignorePath) {
+    const ignorer = createIgnorer(opts.ignorePath, opts.withNodeModules);
+    ignored = ignorer.ignores(opts.filepath);
+  }
 
-  const normalizedOpts = options.normalize(
-    Object.assign({}, opts, { filepath: filePath })
-  );
   const inferredParser =
-    options.inferParser(filePath, normalizedOpts.plugins) || null;
+    options.inferParser(opts.filepath, opts.plugins) || null;
 
   return {
     exists,
