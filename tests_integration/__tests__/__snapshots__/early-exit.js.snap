@@ -108,7 +108,6 @@ exports[`show detailed usage with --help file-info (stdout) 1`] = `
 "--file-info <path>
 
   Extract the following info (as JSON) for a given file path. Reported fields:
-  * exists (boolean) - true if file exists
   * ignored (boolean) - true if file path is filtered by --ignore-path
   * inferredParser (string | null) - name of parser inferred from file path
 "
@@ -608,7 +607,6 @@ Config options:
                            Defaults to cli-override.
   --no-editorconfig        Don't take .editorconfig into account when parsing configuration.
   --file-info <path>       Extract the following info (as JSON) for a given file path. Reported fields:
-                           * exists (boolean) - true if file exists
                            * ignored (boolean) - true if file path is filtered by --ignore-path
                            * inferredParser (string | null) - name of parser inferred from file path
   --find-config-path <path>
@@ -755,7 +753,6 @@ Config options:
                            Defaults to cli-override.
   --no-editorconfig        Don't take .editorconfig into account when parsing configuration.
   --file-info <path>       Extract the following info (as JSON) for a given file path. Reported fields:
-                           * exists (boolean) - true if file exists
                            * ignored (boolean) - true if file path is filtered by --ignore-path
                            * inferredParser (string | null) - name of parser inferred from file path
   --find-config-path <path>

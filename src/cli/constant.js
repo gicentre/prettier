@@ -136,7 +136,6 @@ const options = {
     category: coreOptions.CATEGORY_CONFIG,
     description: dedent`
       Extract the following info (as JSON) for a given file path. Reported fields:
-      * exists (boolean) - true if file exists
       * ignored (boolean) - true if file path is filtered by --ignore-path
       * inferredParser (string | null) - name of parser inferred from file path
     `
