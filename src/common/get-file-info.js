@@ -8,13 +8,9 @@ const options = require("../main/options");
  * @param {{ ignorePath?: string, withNodeModules?: boolean, plugins: object }} opts
  */
 function getFileInfo(filepath, opts) {
-  opts = opts || {};
-
   let ignored = false;
-  if (opts.ignorePath) {
-    const ignorer = createIgnorer(opts.ignorePath, opts.withNodeModules);
-    ignored = ignorer.ignores(filepath);
-  }
+  const ignorer = createIgnorer(opts.ignorePath, opts.withNodeModules);
+  ignored = ignorer.ignores(filepath);
 
   const inferredParser = options.inferParser(filepath, opts.plugins) || null;
 
