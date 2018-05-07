@@ -801,6 +801,15 @@ Other options:
 
 exports[`throw error and show usage with something unexpected (write) 1`] = `Array []`;
 
+exports[`throw error with --file-info + multiple files (stderr) 1`] = `
+"[error] Cannot use --file-info with multiple files
+"
+`;
+
+exports[`throw error with --file-info + multiple files (stdout) 1`] = `""`;
+
+exports[`throw error with --file-info + multiple files (write) 1`] = `Array []`;
+
 exports[`throw error with --find-config-path + multiple files (stderr) 1`] = `
 "[error] Cannot use --find-config-path with multiple files
 "
