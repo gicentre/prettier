@@ -89,11 +89,11 @@ function logResolvedConfigPathOrDie(context) {
 }
 
 function logFileInfoOrDie(context) {
-  const options = Object.assign({}, context.options, {
+  const options = {
     ignorePath: context.argv["ignore-path"],
     withNodeModules: context.argv["with-node-modules"],
-    plugins: context.argv["plugins"]
-  });
+    plugins: context.argv["plugin"]
+  };
   context.logger.log(
     prettier.format(
       stringify(prettier.getFileInfo(context.argv["file-info"], options)),
