@@ -6,6 +6,10 @@ const options = require("../main/options");
 /**
  * @param {string} filePath
  * @param {{ ignorePath?: string, withNodeModules?: boolean, plugins: object }} opts
+ *
+ * Please note that prettier.getFileInfo() expects opts.plugins to be an array of paths,
+ * not an object. A transformation from this array to an object is automatically done
+ * internally by the method wrapper. See withPlugins() in index.js.
  */
 function getFileInfo(filePath, opts) {
   let ignored = false;
