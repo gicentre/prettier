@@ -13,11 +13,10 @@ function getFileInfo(filepath, opts) {
   let ignored = false;
   if (opts.ignorePath) {
     const ignorer = createIgnorer(opts.ignorePath, opts.withNodeModules);
-    ignored = ignorer.ignores(opts.filepath);
+    ignored = ignorer.ignores(filepath);
   }
 
-  const inferredParser =
-    options.inferParser(opts.filepath, opts.plugins) || null;
+  const inferredParser = options.inferParser(filepath, opts.plugins) || null;
 
   return {
     ignored,
