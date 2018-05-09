@@ -74,7 +74,7 @@ As you repeatedly call `resolveConfig`, the file system structure will be cached
 
 ## `prettier.getFileInfo(filePath [, options])`
 
-`getFileInfo` can be used by editor extensions to decide if a particular file needs to be formatted. This method returns an object with the following properties:
+`getFileInfo` can be used by editor extensions to decide if a particular file needs to be formatted. This method returns a promise, which resolves to an object with the following properties:
 
 ```typescript
 {
@@ -86,6 +86,8 @@ As you repeatedly call `resolveConfig`, the file system structure will be cached
 Setting `options.ignorePath` (`string`) and `options.withNodeModules` (`boolean`) influence the value of `ignored` (`false` by default).
 
 Providing [plugin](./plugins.md) paths in `options.plugins` (`string[]`) helps extract `inferredParser` for files that are not supported by Prettier core.
+
+Use `prettier.getFileInfo.sync(filePath [, options])` if you'd like to use sync version.
 
 ## `prettier.getSupportInfo([version])`
 

@@ -92,11 +92,22 @@ describe("extracts file-info with inferredParser=null when a plugin is hand-pick
 });
 
 test("API getFileInfo with no args", () => {
-  expect(() => prettier.getFileInfo()).toThrow();
+  expect(prettier.getFileInfo()).rejects.toThrow();
+});
+
+test("API getFileInfo.sync with no args", () => {
+  expect(() => prettier.getFileInfo.sync()).toThrow();
 });
 
 test("API getFileInfo with filepath only", () => {
-  expect(prettier.getFileInfo("README")).toMatchObject({
+  expect(prettier.getFileInfo("README")).resolves.toMatchObject({
+    ignored: false,
+    inferredParser: "markdown"
+  });
+});
+
+test("API getFileInfo.sync with filepath only", () => {
+  expect(prettier.getFileInfo.sync("README")).toMatchObject({
     ignored: false,
     inferredParser: "markdown"
   });
@@ -110,13 +121,36 @@ test("API getFileInfo with ignorePath", () => {
     path.join(__dirname, "../cli/ignore-path/.prettierignore")
   );
 
-  expect(prettier.getFileInfo(file)).toMatchObject({
+  expect(prettier.getFileInfo(file)).resolves.toMatchObject({
     ignored: false,
     inferredParser: "babylon"
   });
 
   expect(
     prettier.getFileInfo(file, {
+      ignorePath
+    })
+  ).resolves.toMatchObject({
+    ignored: true,
+    inferredParser: "babylon"
+  });
+});
+
+test("API getFileInfo.sync with ignorePath", () => {
+  const file = path.resolve(
+    path.join(__dirname, "../cli/ignore-path/regular-module.js")
+  );
+  const ignorePath = path.resolve(
+    path.join(__dirname, "../cli/ignore-path/.prettierignore")
+  );
+
+  expect(prettier.getFileInfo.sync(file)).toMatchObject({
+    ignored: false,
+    inferredParser: "babylon"
+  });
+
+  expect(
+    prettier.getFileInfo.sync(file, {
       ignorePath
     })
   ).toMatchObject({
@@ -129,7 +163,7 @@ test("API getFileInfo with withNodeModules", () => {
   const file = path.resolve(
     path.join(__dirname, "../cli/with-node-modules/node_modules/file.js")
   );
-  expect(prettier.getFileInfo(file)).toMatchObject({
+  expect(prettier.getFileInfo(file)).resolves.toMatchObject({
     ignored: true,
     inferredParser: "babylon"
   });
@@ -137,7 +171,7 @@ test("API getFileInfo with withNodeModules", () => {
     prettier.getFileInfo(file, {
       withNodeModules: true
     })
-  ).toMatchObject({
+  ).resolves.toMatchObject({
     ignored: false,
     inferredParser: "babylon"
   });
@@ -151,7 +185,7 @@ test("API getFileInfo with hand-picked plugins", () => {
       "../plugins/automatic/node_modules/@prettier/plugin-foo"
     )
   );
-  expect(prettier.getFileInfo(file)).toMatchObject({
+  expect(prettier.getFileInfo(file)).resolves.toMatchObject({
     ignored: false,
     inferredParser: null
   });
@@ -159,7 +193,7 @@ test("API getFileInfo with hand-picked plugins", () => {
     prettier.getFileInfo(file, {
       plugins: [pluginPath]
     })
-  ).toMatchObject({
+  ).resolves.toMatchObject({
     ignored: false,
     inferredParser: "foo"
   });

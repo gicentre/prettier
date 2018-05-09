@@ -96,7 +96,7 @@ function logFileInfoOrDie(context) {
   };
   context.logger.log(
     prettier.format(
-      stringify(prettier.getFileInfo(context.argv["file-info"], options)),
+      stringify(prettier.getFileInfo.sync(context.argv["file-info"], options)),
       {
         parser: "json"
       }

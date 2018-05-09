@@ -11,7 +11,7 @@ const options = require("../main/options");
  * not an object. A transformation from this array to an object is automatically done
  * internally by the method wrapper. See withPlugins() in index.js.
  */
-function getFileInfo(filePath, opts) {
+function _getFileInfo(filePath, opts) {
   let ignored = false;
   const ignorer = createIgnorer(opts.ignorePath, opts.withNodeModules);
   ignored = ignorer.ignores(filePath);
@@ -23,5 +23,18 @@ function getFileInfo(filePath, opts) {
     inferredParser
   };
 }
+
+// the method has been implemented as asynchronous to avoid possible breaking changes in future
+function getFileInfo(filePath, opts) {
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(_getFileInfo(filePath, opts));
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+getFileInfo.sync = _getFileInfo;
 
 module.exports = getFileInfo;
